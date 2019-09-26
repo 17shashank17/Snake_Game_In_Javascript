@@ -1,0 +1,110 @@
+<html>
+<head>
+    <title>Snake Game</title>
+</head>
+<style>
+    div{
+        text-align: center;
+    }
+</style>
+<body>
+    <div>
+        <h1>Snake Game</h1>
+        <h2 id="score">Score: </h2>
+        <canvas id="canv" width="600" height="600"></canvas>
+    </div>
+</body>
+</html>
+<script>
+    var i=5;
+    window.onload=function(){
+        canv=document.getElementById("canv");
+        ctx=canv.getContext("2d");
+        event=document.addEventListener('keydown',keyPush);
+        //console.log("HI");
+        console.log(i);
+        setInterval(game,1000/10);
+    }
+    var x=0,y=0;
+    var count=0;
+    var posx=10,posy=10;
+    var foodx=15,foody=15;
+    var tail=4;
+    var node=[];
+    var luckyx=luckyy=0;
+    var gs=tc=20;
+    var score=document.getElementById("score");
+ 
+    function game(){
+        //console.log("Hi Game");
+        posx+=x;
+        posy+=y;
+        if(posx<0){
+            posx=tc-1;
+        }
+        else if(posx>tc-1){
+            posx=0;
+        }
+        else if(posy<0){
+            posy=tc-1;
+        }
+        else if(posy>tc-1){
+            posy=0;
+        }
+        ctx.fillStyle="black";
+        ctx.fillRect(0,0,canv.width,canv.height);
+ 
+        ctx.fillStyle="gray";
+        for(var i=0;i<node.length;i++){
+            ctx.fillRect(node[i].px*gs,node[i].py*gs,gs-2,gs-2);
+            if (node[i].px==posx && node[i].py==posy){
+                tail=4;
+            }
+        }
+        node.push({px:posx,py:posy});
+        while(node.length>tail){
+            node.shift();
+        }
+        //console.log(node);
+        if(posx==foodx && posy==foody){
+            tail+=1;
+            count+=1;
+            i=i*2;
+            foodx=Math.floor(Math.random()*tc);
+            foody=Math.floor(Math.random()*tc);
+            score.innerHTML="Score: "+10*count;
+        }
+        /*if (count != 0 && count%5==0){
+            luckyx=Math.floor(Math.random()*tc);
+            luckyy=Math.floor(Math.random()*tc);
+        }
+        if (posx==luckyx && posy==luckyy){
+            score.innerHTML="Score: "+10*count+50;
+        }*/
+        ctx.fillStyle="skyblue";
+        ctx.fillRect(foodx*gs,foody*gs,gs-2,gs-2);
+    }
+    function keyPush(evt){
+        //console.log("Hi key");
+        switch(evt.keyCode){
+            case 37:
+                x=-1;
+                y=0;
+                break;
+            case 38:
+                x=0;
+                y=-1;
+                break;
+            case 39:
+                x=1;
+                y=0;
+                break;
+            case 40:
+                x=0;
+                y=1;
+                break;
+        }
+    }
+   
+</script>
+</html>
